@@ -1,0 +1,16 @@
+{
+  "nombre": "Oscar Castillo",
+  "rol_buscado": "Software Engineer Intern",
+  "skills": ["Python", "FastAPI", "Flask", "React", "AWS", "PostgreSQL", "SQLAlchemy", "Docker"],
+  "ciudadania": "USA/Mexico",
+  "no_requiere_visa_sponsorship": true,
+  "disponibilidad": "Verano 2026",
+  "hackathons": ["NASA Space Apps 1st Place", "Daimler Hackathon 1st Place"],
+  "idiomas": ["Español", "Inglés"],
+  "preferencias": {
+    "ubicacion": ["Remote", "USA"],
+    "tipo": ["Internship", "New Grad"],
+    "empresas_target": ["Stripe", "Cloudflare", "startups YC"],
+    "evitar": ["requiere_sponsorship", "sin_remote"]
+  }
+}
