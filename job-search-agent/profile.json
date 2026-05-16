@@ -1,16 +1,150 @@
 {
-  "nombre": "Oscar Castillo",
-  "rol_buscado": "Software Engineer Intern",
-  "skills": ["Python", "FastAPI", "Flask", "React", "AWS", "PostgreSQL", "SQLAlchemy", "Docker"],
-  "ciudadania": "USA/Mexico",
-  "no_requiere_visa_sponsorship": true,
-  "disponibilidad": "Verano 2026",
-  "hackathons": ["NASA Space Apps 1st Place", "Daimler Hackathon 1st Place"],
-  "idiomas": ["Español", "Inglés"],
-  "preferencias": {
-    "ubicacion": ["Remote", "USA"],
+  "personal": {
+    "nombre": "Oscar Alexander Castillo",
+    "ciudadania": "U.S. Citizen",
+    "ubicacion_actual": "Busan, South Korea (Exchange)",
+    "ubicacion_base": "Saltillo, Coahuila, Mexico",
+    "email": "oscarcastillo1805@gmail.com",
+    "linkedin": "linkedin.com/in/oscar-alexander-castillo-110433331",
+    "portfolio": "sweoscarcastilloportfolio.vercel.app",
+    "requiere_visa_sponsorship": false,
+    "disponibilidad": "Verano 2026"
+  },
+
+  "rol_buscado": {
+    "titulos": [
+      "Software Engineer Intern",
+      "Backend Engineer Intern",
+      "Full Stack Engineer Intern",
+      "SWE Intern"
+    ],
     "tipo": ["Internship", "New Grad"],
-    "empresas_target": ["Stripe", "Cloudflare", "startups YC"],
-    "evitar": ["requiere_sponsorship", "sin_remote"]
+    "ubicacion_preferida": ["Remote", "USA"],
+    "no_considerar": ["requiere sponsorship", "solo onsite fuera de USA"]
+  },
+
+  "experiencia": [
+    {
+      "empresa": "ADM Asesoría y Diseño Mecánico",
+      "rol": "Software Engineer Intern — Full Stack",
+      "duracion_meses": 4,
+      "highlights": [
+        "Flask REST API + SQL Server reemplazando workflows manuales",
+        "50+ empleados impactados",
+        "Reducción de query latency ~40%",
+        "Aplicación web completa con zero downtime"
+      ],
+      "stack": ["Python", "Flask", "SQL Server", "JavaScript", "Bootstrap"]
+    },
+    {
+      "empresa": "Freelance",
+      "rol": "Full Stack Developer",
+      "duracion_meses": 8,
+      "highlights": [
+        "Recepciones Fatima: Flask + Azure SQL para 100+ bookings mensuales",
+        "AWS Community Day 2026: check-in system React + Lambda + DynamoDB para 400+ asistentes, zero downtime"
+      ],
+      "stack": ["Flask", "React", "Azure SQL", "Azure Blob Storage", "AWS Lambda", "DynamoDB"]
+    }
+  ],
+
+  "proyectos_destacados": [
+    {
+      "nombre": "XchangeBusan",
+      "tipo": "Personal — live con usuarios activos",
+      "descripcion": "Full stack web app para exchange students en Busan",
+      "stack": ["FastAPI", "PostgreSQL", "SQLAlchemy", "React", "Vite", "TanStack Query", "Tailwind", "Render", "Neon", "Vercel"]
+    },
+    {
+      "nombre": "BURROLEX",
+      "tipo": "NASA Space Apps Challenge — 1st Place",
+      "descripcion": "Real-time AI sorting system con YOLOv8 + Flask en 36hrs",
+      "stack": ["Python", "Flask", "YOLOv8", "OpenCV", "Arduino"]
+    },
+    {
+      "nombre": "Predictive Maintenance Platform",
+      "tipo": "Daimler Hackathon — 1st Place",
+      "descripcion": "ML pipeline en sensor streams industriales con Power BI dashboard",
+      "stack": ["Python", "scikit-learn", "Flask", "Pandas", "Power BI", "SQL Server"]
+    },
+    {
+      "nombre": "URBI.AI",
+      "tipo": "MexAth0n x Google — 3rd Place Nacional",
+      "descripcion": "ETL pipeline con 5+ datasets geoespaciales y scoring API con GIS dashboard",
+      "stack": ["Python", "Pandas", "Vertex AI", "Firebase", "GIS"]
+    },
+    {
+      "nombre": "CORTEX",
+      "tipo": "HackMTY (MLH) — Top 8 Nacional (1000+ participantes)",
+      "descripcion": "Forecasting backend con Prophet sobre datos de transacciones Banorte, 200+ SME test users",
+      "stack": ["Python", "Prophet", "Flask", "Pandas", "scikit-learn"]
+    }
+  ],
+
+  "hackathons": {
+    "total": 6,
+    "podiums": [
+      "1st — NASA Space Apps Challenge 2025",
+      "1st — Daimler Hackathon 2025",
+      "2nd — Durango Regional Hackatec 2025",
+      "3rd Nacional — MexAth0n x Google 2025",
+      "Top 8 Nacional — HackMTY MLH 2025 (1000+ participantes)"
+    ]
+  },
+
+  "skills": {
+    "languages": ["Python", "JavaScript", "TypeScript", "SQL"],
+    "frontend": ["React", "Vite", "TanStack Query", "Tailwind", "Bootstrap", "HTML/CSS"],
+    "backend": ["FastAPI", "Flask", "Node.js", "Express", "RESTful APIs", "JWT", "RBAC"],
+    "databases": ["PostgreSQL", "SQL Server", "MySQL", "DynamoDB", "SQLAlchemy"],
+    "cloud": ["AWS Lambda", "AWS DynamoDB", "AWS S3", "Azure SQL", "Azure Blob Storage", "Firebase", "Vercel", "Render", "Railway"],
+    "ml_data": ["scikit-learn", "Prophet", "YOLOv8", "Pandas", "NumPy", "Vertex AI", "OpenCV"],
+    "workflow": ["Git", "GitHub", "Agile", "Scrum", "Kanban", "unit testing"]
+  },
+
+  "fortalezas_para_filtrado": [
+    "U.S. Citizen — no requiere sponsorship",
+    "Experiencia real en producción (no solo proyectos académicos)",
+    "5 podiums en hackathons incluyendo NASA y Daimler",
+    "Full stack con fuerte énfasis en backend y APIs",
+    "Experiencia con AWS en producción (Lambda, DynamoDB)",
+    "Proyecto live con usuarios reales (XchangeBusan)",
+    "GPA 3.7/4.0"
+  ],
+
+  "educacion": {
+    "carrera": "B.Sc. Computer Systems Engineering",
+    "institucion": "Instituto Tecnológico de Saltillo",
+    "gpa": "3.7/4.0",
+    "graduacion_estimada": "2027",
+    "exchange": "Dongseo University, Busan, South Korea — Full Scholarship 2026"
+  },
+
+  "idiomas": ["Español (nativo)", "Inglés (profesional)"],
+
+  "empresas_target": [
+    "Stripe", "Cloudflare", "Linear", "Vercel", "PlanetScale",
+    "Supabase", "Railway", "Render", "startups YC", "Anthropic",
+    "Scale AI", "Notion", "Figma", "Retool"
+  ],
+
+  "criterios_match_ia": {
+    "must_have": [
+      "rol de internship o new grad en software engineering",
+      "acepta ciudadanos americanos o no requiere sponsorship",
+      "backend, full stack, o API development"
+    ],
+    "nice_to_have": [
+      "remote o USA",
+      "stack Python o JavaScript",
+      "empresa de tecnología o startup",
+      "menciona AWS o cloud"
+    ],
+    "dealbreakers": [
+      "requiere sponsorship de visa",
+      "solo acepta estudiantes de universidades USA",
+      "experiencia mínima de 2+ años",
+      "no es rol de software engineering"
+    ]
   }
 }

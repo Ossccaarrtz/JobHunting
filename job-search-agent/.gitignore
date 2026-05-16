@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Paquetes instalados localmente (pip install -t .)
+*.dist-info/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# Zip de deploy
+function.zip
+
+# Entornos virtuales
+venv/
+.venv/
