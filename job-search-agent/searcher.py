@@ -20,7 +20,7 @@ def _buscar_query(query: str, pagina: int = 1) -> list[dict]:
         "query": query,
         "page": str(pagina),
         "num_pages": "1",
-        "date_posted": "today",
+        "date_posted": "3days",
     }
     try:
         response = requests.get(JSEARCH_URL, headers=HEADERS, params=params, timeout=15)

@@ -1,8 +1,7 @@
 import os
 import json
 import re
-from google import genai
-from google.genai import types
+import groq
 
 # Cargar perfil una sola vez al inicio del módulo
 _PROFILE_PATH = os.path.join(os.path.dirname(__file__), "profile.json")
@@ -38,12 +37,18 @@ _client = None
 def _get_client():
     global _client
     if _client is None:
-        _client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        _client = groq.Groq(api_key=os.environ["GROQ_API_KEY"])
     return _client
 
 
-def _evaluar_job(job: dict) -> dict | None:
-    """Evalúa un job con Gemini. Retorna el job con campo 'razon' si hace match, None si no."""
+def _evaluar_job(job: dict) -> tuple[bool, dict | None]:
+    """
+    Evalúa un job con Groq (llama-3.1-8b-instant).
+    Retorna (evaluado, job_o_none):
+      - (True, job)  → Groq respondió y hace match
+      - (True, None) → Groq respondió pero no hace match
+      - (False, None)→ Error de API, no se evaluó
+    """
     prompt = PROMPT_TEMPLATE.format(
         perfil=json.dumps(_PERFIL_RESUMIDO, ensure_ascii=False),
         titulo=job["titulo"],
@@ -52,37 +57,44 @@ def _evaluar_job(job: dict) -> dict | None:
         descripcion=job["descripcion"][:800],
     )
     try:
-        response = _get_client().models.generate_content(
-            model="gemini-1.5-flash",
-            contents=prompt,
+        response = _get_client().chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=100,
         )
-        texto = response.text.strip()
-        # Limpiar posible markdown que Gemini agregue
+        texto = response.choices[0].message.content.strip()
         texto = re.sub(r"^```(?:json)?\s*", "", texto)
         texto = re.sub(r"\s*```$", "", texto)
         resultado = json.loads(texto)
         if resultado.get("match"):
             job["razon_match"] = resultado.get("razon", "")
-            return job
-        return None
+            return True, job
+        return True, None
     except Exception as e:
         print(f"[filter] Error evaluando '{job['titulo']}' en {job['empresa']}: {e}")
-        return None
+        return False, None
 
 
-def filtrar_con_ia(jobs: list[dict]) -> list[dict]:
+def filtrar_con_ia(jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """
-    Filtra la lista de jobs con Gemini.
-    Retorna solo los jobs relevantes con campo 'razon_match' agregado.
+    Filtra la lista de jobs con Groq.
+    Retorna (relevantes, evaluados_exitosamente).
+    Solo los evaluados exitosamente deben marcarse como vistos en DynamoDB.
+    Los que tuvieron error de API se omiten para que se reintenten en la próxima corrida.
     """
     if not jobs:
-        return []
+        return [], []
 
     relevantes = []
+    evaluados = []
     for job in jobs:
-        resultado = _evaluar_job(job)
-        if resultado:
-            relevantes.append(resultado)
+        ok, resultado = _evaluar_job(job)
+        if ok:
+            evaluados.append(job)
+            if resultado is not None:
+                relevantes.append(resultado)
 
-    print(f"[filter] {len(relevantes)}/{len(jobs)} jobs pasaron el filtro de IA")
-    return relevantes
+    errores = len(jobs) - len(evaluados)
+    print(f"[filter] {len(relevantes)}/{len(evaluados)} jobs pasaron el filtro de IA"
+          + (f" ({errores} errores de API, se reintentarán)" if errores else ""))
+    return relevantes, evaluados

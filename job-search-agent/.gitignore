@@ -7,8 +7,9 @@
 __pycache__/
 *.pyc
 
-# Zip de deploy
+# Zip de deploy y paquetes
 function.zip
+.lambda-pkg/
 
 # Entornos virtuales
 venv/

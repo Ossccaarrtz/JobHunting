@@ -9,8 +9,11 @@ HANDLER="handler.lambda_handler"
 TIMEOUT=60
 MEMORY=256
 RULE_NAME="job-search-schedule"
-PKG_DIR="/tmp/lambda-pkg"
-ZIP_PATH="/tmp/function.zip"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PKG_DIR="$SCRIPT_DIR/.lambda-pkg"
+ZIP_PATH="$SCRIPT_DIR/function.zip"
+PKG_WIN="$(cygpath -w "$PKG_DIR")"
+ZIP_WIN="$(cygpath -w "$ZIP_PATH")"
 
 # Cargar variables del .env
 set -a
@@ -26,19 +29,7 @@ echo "Rol IAM: $ROLE_ARN"
 
 # ─── Empaquetar ───────────────────────────────────────────────────────────────
 echo ""
-echo "Instalando dependencias..."
-rm -rf "$PKG_DIR"
-pip install -r requirements.txt --target "$PKG_DIR" -q --no-cache-dir
-
-echo "Copiando código fuente..."
-cp handler.py searcher.py filter.py storage.py notifier.py profile.json "$PKG_DIR/"
-
-echo "Creando zip..."
-cd "$PKG_DIR"
-zip -r "$ZIP_PATH" . -q
-cd -
-
-echo "Zip: $(du -sh $ZIP_PATH | cut -f1)"
+python package.py
 
 # ─── Lambda: crear o actualizar ───────────────────────────────────────────────
 echo ""
@@ -46,7 +37,7 @@ if aws lambda get-function --function-name "$FUNCTION_NAME" --region "$REGION" &
     echo "Actualizando código de Lambda..."
     aws lambda update-function-code \
         --function-name "$FUNCTION_NAME" \
-        --zip-file "fileb://$ZIP_PATH" \
+        --zip-file "fileb://$ZIP_WIN" \
         --region "$REGION" \
         --output text --query 'FunctionArn'
 
@@ -61,7 +52,7 @@ else
         --runtime "$RUNTIME" \
         --role "$ROLE_ARN" \
         --handler "$HANDLER" \
-        --zip-file "fileb://$ZIP_PATH" \
+        --zip-file "fileb://$ZIP_WIN" \
         --timeout "$TIMEOUT" \
         --memory-size "$MEMORY" \
         --region "$REGION" \
@@ -82,7 +73,7 @@ aws lambda update-function-configuration \
     --memory-size "$MEMORY" \
     --environment "Variables={
         JSEARCH_API_KEY=$JSEARCH_API_KEY,
-        GEMINI_API_KEY=$GEMINI_API_KEY,
+        GROQ_API_KEY=$GROQ_API_KEY,
         TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN,
         TELEGRAM_CHAT_ID=$TELEGRAM_CHAT_ID,
         DYNAMODB_TABLE=job-search-seen
@@ -97,10 +88,10 @@ aws lambda wait function-updated \
 
 # ─── EventBridge ──────────────────────────────────────────────────────────────
 echo ""
-echo "Configurando EventBridge (cada 6 horas)..."
+echo "Configurando EventBridge (cada 8 horas)..."
 RULE_ARN=$(aws events put-rule \
     --name "$RULE_NAME" \
-    --schedule-expression "rate(6 hours)" \
+    --schedule-expression "rate(8 hours)" \
     --state ENABLED \
     --region "$REGION" \
     --query 'RuleArn' --output text)
@@ -135,7 +126,7 @@ echo ""
 echo "Deploy completado."
 echo "  Lambda : $LAMBDA_ARN"
 echo "  Regla  : $RULE_ARN"
-echo "  Schedule: rate(6 hours)"
+echo "  Schedule: rate(8 hours)"
 echo ""
 echo "Para invocar manualmente:"
 echo "  aws lambda invoke --function-name $FUNCTION_NAME --region $REGION /tmp/response.json && cat /tmp/response.json"
